@@ -1,0 +1,17 @@
+A project for CSE 111 (Database Systems), UC Merced, Fall 2013
+
+A database to store simple inventory information for an instructional chemistry
+lab.
+
+Written in Python 2.7
+
+startdb.py initializes a database connection to a database with the name
+of the argument passed to it (a string). If the database does not exist, it will
+initialize it by executing makedbschema.sql line-by-line.
+
+Next goal is to fill the db with appropriate information from filldb.sql
+
+database is the sample DB that is being tested on.
+
+
+
