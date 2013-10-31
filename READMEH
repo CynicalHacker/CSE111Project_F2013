@@ -5,13 +5,36 @@ lab.
 
 Written in Python 2.7
 
-startdb.py initializes a database connection to a database with the name
-of the argument passed to it (a string). If the database does not exist, it will
-initialize it by executing makedbschema.sql line-by-line.
+############################################################################
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+                        Version 2, December 2004 
 
-Next goal is to fill the db with appropriate information from filldb.sql
+     Copyright (C) 2004 Sam Hocevar <sam@hocevar.net> 
 
-database is the sample DB that is being tested on.
+     Everyone is permitted to copy and distribute verbatim or modified 
+     copies of this license document, and changing it is allowed as long 
+     as the name is changed. 
+
+                DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+       TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+
+      0. You just DO WHAT THE FUCK YOU WANT TO.
+############################################################################
+
+--startdb.py--
+	conn_to_db(dbname, create=False)
+
+	conn_to_db initializes a database connection to a database with the name
+	of the argument passed to it (the string dbname). If the db does not
+	exist, it will return None with a message unless create=True is passed.
+
+	If create=True, the program attempts to open makedbschema.sql and execute 
+	it line-by-line. An IOException or sql exception here will cause it to
+	print an error message and return None.
+
+	After the schema is created, conn_to_db attempts to open filldb.sql and
+	execute it line-by-line to populate the database. Again, exceptions here
+	will cause it to return None and print a message.
 
 
 
