@@ -10,7 +10,7 @@ import myuser
 ##Module to initialize db connection and authenticate the user.
 
 def login_user():
-	print("Enter databse name (blank for default):")
+	print("Enter database name (blank for default):")
 	dbname = raw_input()
 	if dbname == "": #if blank, use default name
 		dbname = "chemdb" 
@@ -31,9 +31,11 @@ def login_user():
 	#We now have a connection to a database.
 	print("Database connection successful!")	
 	while(True):
-		print("Are you user or admin?")
+		print("Are you user or admin? ('user' for user, 'admin' for admin)")
 		user = raw_input()
-		if user == "user":
+		if user == "yes" or user == "y":
+			print("Try again dumbass.")
+		elif user == "user":
 			print("Welcome, user!")
 			myuser.main(conn) #Pass control to myuser.py
 			sys.exit(0) #If we return from myuser, exit the program
@@ -41,16 +43,13 @@ def login_user():
 			print("Please enter the admin password:")
 			pwd = raw_input()
 			if isAdmin(pwd):
-				print("Welcome, Admin!")
+				print("Welcome, Admin or lucky guesser!")
 				myadmin.main(conn) #Pass control to myadmin.py
 				sys.exit(0) #If we return from myadmin, exit program
 			else:
 				print("Authentication failure!")
 		else:
 			print("Unrecognized user type!")
-
-def make_default_db():
-	return conn_to_db("chemdb", True)
 
 def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, None if error
 	try:
