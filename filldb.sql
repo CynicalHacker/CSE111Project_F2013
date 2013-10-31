@@ -90,6 +90,21 @@ INSERT INTO supplier VALUES ('Spectrum Chemicals', '18007728786', 'Canada');
 --CREATE TABLE catalog (casn decimal(10,0) not null, csname varchar not null, price decimal(8,2) not null, amount decimal(10,2) not null, units char(1) not null);
 
 INSERT INTO catalog VALUES ('118967', 'Sigma-Aldrich', '1000.99', 20, 'g');
+INSERT INTO catalog VALUES ('50782', 'Thermo Fisher Scientific', '25.00', 50 'g');
+INSERT INTO catalog VALUES ('7440144', 'Spectrum Chemicals', '2000.00', 0.1, 'g');
+INSERT INTO catalog VALUES ('71238', 'Sigma-Aldrich', '200.00', 1, 'L');
+INSERT INTO catalog VALUES ('7726956', 'Spectrum Chemicals', '1234.56', '9001' , 'L');
+
+
+
+
+
+
+
+
+
+
+
 
 
 
