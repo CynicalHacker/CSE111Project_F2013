@@ -11,10 +11,11 @@
 *.so
 *.pyc
 
-# Temporary files created by gedit or vim #
+# Temporary files created by gedit,vim,emacs #
 ###########################################
 *.*~
 *.swp
+\#*\#
 
 # Packages #
 ############

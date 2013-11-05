@@ -17,7 +17,7 @@ def login_user():
 	conn = conn_to_db(dbname) #attempt connection
 	if conn is None: #DB is missing
 		print("Database connection failed. Force creation[y/n]?")
-		cont = raw_input
+		cont = raw_input()
 		if cont == "y":
 			conn = conn_to_db(dbname, True)
 			if conn is None: #Creation failed, probably missing config
@@ -83,7 +83,7 @@ def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, Non
 				filldb = open("filldb.sql")
 				
 				for l in filldb:
-					c.execute(l)
+					c.execute(l )
 				conn.commit()
 				
 				return conn #Return connection to freshly populated database
@@ -108,3 +108,6 @@ def isAdmin(password):
 		return True	
 	else:
 		return False
+
+def clearscreen():
+	os.system('cls' if os.name=='nt' else 'clear')
