@@ -11,13 +11,13 @@ import myuser
 
 def login_user():
 	print("Enter database name (blank for default):")
-	dbname = raw_input()
+	dbname = input()
 	if dbname == "": #if blank, use default name
 		dbname = "chemdb" 
 	conn = conn_to_db(dbname) #attempt connection
 	if conn is None: #DB is missing
 		print("Database connection failed. Force creation[y/n]?")
-		cont = raw_input()
+		cont = input()
 		if cont == "y":
 			conn = conn_to_db(dbname, True)
 			if conn is None: #Creation failed, probably missing config
@@ -32,7 +32,7 @@ def login_user():
 	print("Database connection successful!")	
 	while(True):
 		print("Are you user or admin? ('user' for user, 'admin' for admin)")
-		user = raw_input()
+		user = input()
 		if user == "yes" or user == "y":
 			print("Try again dumbass.")
 		elif user == "user":
@@ -41,7 +41,7 @@ def login_user():
 			sys.exit(0) #If we return from myuser, exit the program
 		elif user == "admin":
 			print("Please enter the admin password:")
-			pwd = raw_input()
+			pwd = input()
 			if isAdmin(pwd):
 				print("Welcome, Admin or lucky guesser!")
 				myadmin.main(conn) #Pass control to myadmin.py
@@ -70,7 +70,7 @@ def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, Non
 				conn.commit() 	 #and execute them. Must be one SQL per line.
 				
 			except sqlite3.OperationalError: #bad SQL code!
-				print "Warning! SQL Error detected! Please check makebdschema.sql for syntax errors! Stack trace below:"
+				print("Warning! SQL Error detected! Please check makebdschema.sql for syntax errors! Stack trace below:")
 				traceback.print_exc()
 				return None #For safety
 			except IOError:
@@ -88,10 +88,10 @@ def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, Non
 				
 				return conn #Return connection to freshly populated database
 			except IOError:
-				print "Warning! Population script is missing! Please make sure that filldb.sql is present!"
+				print("Warning! Population script is missing! Please make sure that filldb.sql is present!")
 				return None
 			except sqlite3.OperationalError:
-				print "Warning! SQL Error detected! Please check filldb.sql for syntax errors! Stack trace below:"
+				print("Warning! SQL Error detected! Please check filldb.sql for syntax errors! Stack trace below:")
 				traceback.print_exc()
 				return None #For safety
 				

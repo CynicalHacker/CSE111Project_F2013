@@ -22,6 +22,15 @@ Written in Python 2.7
 ############################################################################
 
 --startdb.py--
+	
+	The main parent function which is designed to connect to a database (and
+	create it if it does not exist), authenticate as either user or admin, and
+	start the appropriate menu.
+	
+	Methods of startdb.py:
+
+	----------------------
+
 	conn_to_db(dbname, create=False)
 
 	conn_to_db initializes a database connection to a database with the name
@@ -36,5 +45,26 @@ Written in Python 2.7
 	execute it line-by-line to populate the database. Again, exceptions here
 	will cause it to return None and print a message.
 
+	login_user()
+	
+	A primitive login function which returns true if the password hash matches
+	and false otherwise. Not to be taken seriously.
+
+	clearscreen()
+	
+	A one-line function which calls the system 'clr' if on an NT system and
+	'clear' otherwise.
+
+--myuser.py--
+	
+	A user menu for non-superusers.
+
+	-----------------
+
+	main(conn)
+	
+	Takes a connection and initializes a cursor on that connection. This cursor
+	is global to myuser.py. Afterwards, it launches a text-based user menu
+	which calls on the other menus. 
 
 
