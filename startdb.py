@@ -100,6 +100,7 @@ def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, Non
 				
 def isAdmin(password):
 	#Password is "password". Returns true if it matches
+	#Password is broken for python 3
 	adminhash = '\xf9\xe0H\xbeL\xd0$\xfc\x14<eR}#\xf2\x88\xfb?\xbb\xcfg\xda\x87tU\x9cl\x07\xcd^\xdd\x1dWtQ\xd1\xb1O\x86K\xf1\xca)\\\xd5\xce\xd8\x92\x95\x84\xca\x14\x98\xbex\xd6\x07\xcc5P\xe7L\xce\xca'
 	salt = 'kLi7@alIqDV!2b%."DcNLR$y!yfWkLY11b4l7trkA9j@!r5BDXcm_qDdiQMQd+vq_Ly#M.,ja@,B5g+eUk#FYlW8r8w0ff/Xz%w'
 	checker = hashlib.sha512()
@@ -111,3 +112,5 @@ def isAdmin(password):
 
 def clearscreen():
 	os.system('cls' if os.name=='nt' else 'clear')
+	
+login_user()

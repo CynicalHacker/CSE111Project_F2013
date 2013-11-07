@@ -14,15 +14,15 @@ def main(conn):
     c = conn.cursor() #Create cursor to database
     while True:
         printmainmenu()
-        selection = int(input())
-        if selection == 4:
+        selection = input()
+        if selection == '4':
             print("Goodbye!")
             sys.exit(0)
-        elif selection == 3:
+        elif selection == '3':
             reactionmenu()
-        elif selection == 2:
+        elif selection == '2':
             compoundmenu()
-        elif selection == 1:
+        elif selection == '1':
             labmenu()
         else:
             print("Unrecognized option!")
@@ -51,7 +51,7 @@ def labmenu():
         return
     print("Retrieving data for Lab %s..."%labnum) 
     
-    c.execute("SELECT DISTINCT l_title FROM lab WHERE l_num=(?)", (labnum,))
+    c.execute("SELECT DISTINCT l_title FROM lab WHERE l_num=(?)", [labnum])
     labname=c.fetchone() #Get lab name
     
     c.execute("SELECT DISTINCT l_rname FROM lab WHERE l_num=(?)", [labnum]) #Get rxns
@@ -84,11 +84,24 @@ def labmenu():
     print("\t------------------------------")
     for j in range(len(compoundlist)):
         print("\t %s %s | %s | %s" % (casnlist[j], (10 - len(str(casnlist[j])))*' ',hazlist[j], compoundlist[j]))
-    print("\n\n") #Pad below so that we don't run right onto the menu
+    print("\n") #Pad below so that we don't run right onto the menu
     return
             
 
 def compoundmenu():
+    isCAS = True
+    print("Which compound would you like to look up?")
+    compound = input()
+    try:
+        int(compound)
+    except ValueError:
+        isCAS = False
+
+    if isCAS:
+        c.execute("SELECT * FROM compound WHERE c_casn = ?", [compound])
+    else:
+        c.execute("SELECT * FROM compound WHERE c_name = ?", [compound])
+
     print("Work in progress!")
 
 def reactionmenu():
