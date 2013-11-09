@@ -28,11 +28,6 @@ def main(conn):
             print("Unrecognized option!")
         
 
-
-
-
-
-
 def printmainmenu():
     print("################################")
     print("# Welcome to the Lab Database! #")
@@ -53,6 +48,10 @@ def labmenu():
     
     c.execute("SELECT DISTINCT l_title FROM lab WHERE l_num=(?)", (labnum,))
     labname=c.fetchone() #Get lab name
+
+    if labname == None: #If we do not find the lab name, abort
+        print("Lab %s not found!\n\n" % labnum)
+        return
     
     c.execute("SELECT DISTINCT l_rname FROM lab WHERE l_num=(?)", [labnum]) #Get rxns
     reactionlist = [x[0] for x in c.fetchall()] #List comprehension to get results
@@ -69,10 +68,6 @@ def labmenu():
             hazlist += [x[2] for x in results]
 
     #Now print out all our info:
-    if labname == None:
-        print("Lab %s not found!\n\n" % labnum)
-        return
-
     print("\n") #Clear above
     print("-------Information for Lab %s--------"%labnum)
     print("Title: %s" % labname)
@@ -92,4 +87,30 @@ def compoundmenu():
     print("Work in progress!")
 
 def reactionmenu():
-    print("Work in progress!")
+    print("Which reaction would you like to look up? ",end="") #Assemble all info before printing
+    rxnname = input() #Get lab number
+    if rxnname == "":
+        print("Got invalid input!")
+        return
+    print("Retrieving data for %s..."%rxnnum)    
+
+    c.execute("SELECT r_casn FROM reaction WHERE r_rname=(?)", [rxnname]) #Get CAS for compounds
+    caslist = [x[0] for x in c.fetchall()] #List comprehension to get results
+
+    if caslist == []: #If we do not find the reaction, exit
+        print("Reaction not found!")
+        return
+
+    lablist = []
+    compoundlist = []
+    hazlist = []
+
+    for cas in compoundlist:
+        c.execute("SELECT DISTINCT c_cname,c_hazard FROM compound WHERE AND c_casn = ?",[comp])
+        results = c.fetchall()
+        compoundlist += [x[0] for x in results]
+        hazlist += [x[1] for x in results]
+
+    c.execute("SELECT l_title, l_num FROM lab WHERE l_rname=?",[rxnname])
+    
+    
