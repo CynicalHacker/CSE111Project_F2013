@@ -14,15 +14,15 @@ def main(conn):
     c = conn.cursor() #Create cursor to database
     while True:
         printmainmenu()
-        selection = int(input())
-        if selection == 4:
+        selection = input()
+        if selection == "4":
             print("Goodbye!")
             sys.exit(0)
-        elif selection == 3:
+        elif selection == "3":
             reactionmenu()
-        elif selection == 2:
+        elif selection == "2":
             compoundmenu()
-        elif selection == 1:
+        elif selection == "1":
             labmenu()
         else:
             print("Unrecognized option!")
@@ -92,7 +92,7 @@ def reactionmenu():
     if rxnname == "":
         print("Got invalid input!")
         return
-    print("Retrieving data for %s..."%rxnnum)    
+    print("Retrieving data for %s..."%rxnname)    
 
     c.execute("SELECT r_casn FROM reaction WHERE r_rname=(?)", [rxnname]) #Get CAS for compounds
     caslist = [x[0] for x in c.fetchall()] #List comprehension to get results
@@ -104,13 +104,28 @@ def reactionmenu():
     lablist = []
     compoundlist = []
     hazlist = []
-
-    for cas in compoundlist:
-        c.execute("SELECT DISTINCT c_cname,c_hazard FROM compound WHERE AND c_casn = ?",[comp])
+    
+    for cas in caslist:
+        c.execute("SELECT DISTINCT c_cname,c_hazard FROM compound WHERE c_casn = ?",(cas,))
         results = c.fetchall()
         compoundlist += [x[0] for x in results]
         hazlist += [x[1] for x in results]
 
     c.execute("SELECT l_title, l_num FROM lab WHERE l_rname=?",[rxnname])
-    
-    
+    results = c.fetchall()
+    title = [x[0] for x in results]
+    number = [x[1] for x in results]
+
+    print("\n") #Clear above
+    print("-------Information for Reaction: %s--------"%rxnname)
+    print("Occurs in:")
+    for num in range(len(title)):
+        print("\t Lab %s: %s" % (number[num],title[num]))
+    print("Compounds used:")
+    print("\t CAS #       | Haz | Compound \t")
+    print("\t------------------------------")
+    for j in range(len(compoundlist)):
+        print("\t %s %s | %s | %s" % (caslist[j], (10 - len(str(caslist[j])))*' ',hazlist[j], compoundlist[j]))
+    print("\n\n") #Pad below so that we don't run right onto the menu
+    return
+            
