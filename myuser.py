@@ -26,7 +26,6 @@ def main(conn):
             labmenu()
         else:
             print("Unrecognized option!")
-        
 
 def printmainmenu():
     print("################################")
@@ -85,20 +84,61 @@ def labmenu():
 
 def compoundmenu():
     isCAS = True
+    compound = ""
+    cname = ""
+    casn = ""
+    haz = ""
+
     print("Which compound would you like to look up?")
     compound = input()
     try:
-        int(compound)
+        int(compound) #If we got a CAS#, this will work
     except ValueError:
-        isCAS = False
-
+        isCAS = False #If not, we got a name
+    
     if isCAS:
-        c.execute("SELECT * FROM compound WHERE c_casn = ?", [compound])
+        c.execute("SELECT * FROM compound WHERE c_casn = ?", (compound,))
+        results = c.fetchall()
+        cname = results[0][0]
+        casn = results[0][1]
+        haz = results[0][2]
     else:
-        c.execute("SELECT * FROM compound WHERE c_name = ?", [compound])
+        c.execute("SELECT * FROM compound WHERE c_name = ?", (compound,))
+        results = c.fetchall()
+        cname = results[0][0]
+        casn = results[0][1]
+        haz = results[0][2]
 
-    print("Work in progress!")
+#We now have the cname, casn, and hazard of the compound.
+        
+    print(casn,type(casn))
+    print("DERPY!")
 
+    c.execute("SELECT DISTINCT r_rname FROM reaction WHERE r_casn = ?",['121335'])
+    results = c.fetchall()
+    rname = [x[0] for x in results]
+    
+    ltitle=[]
+    lnum=[]
+    
+    for rxn in rname:
+        c.execute("SELECT DISTINCT l_title,l_num FROM lab WHERE l_rname=?",[rxn])
+        results = c.fetchall()
+        ltitle += [x[0] for x in results]
+        lnum += [x[1] for x in results]
+    
+    print("\n") #Clear above
+    print("-------Information for %s:--------"%cname)
+    print("--CAS #: %s, Hazard Class: %s--" % (casn,haz))
+    print("Used in reactions:")
+    for r in rname:
+        print("\t %s"%r)
+    print("Used in labs:")
+    for r in range(len(ltitle)):
+        print("\t Lab %s: %s"%(lnum[r],ltitle[r]))
+    print("\n\n") #Pad below so that we don't run right onto the menu
+    return
+    
 def reactionmenu():
     print("Which reaction would you like to look up? ",end="") #Assemble all info before printing
     rxnname = input() #Get lab number

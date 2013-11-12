@@ -57,7 +57,7 @@ Written in Python 2.7
 
 --myuser.py--
 	
-	A user menu for non-superusers.
+	A user menu for non-superusers. The various menus take 
 
 	-----------------
 
@@ -67,4 +67,21 @@ Written in Python 2.7
 	is global to myuser.py. Afterwards, it launches a text-based user menu
 	which calls on the other menus. 
 
+	printmainmenu()
+	
+	Prints menu with options. A wrapper to make main() less messy.
 
+	labmenu()
+	
+	Get lab number from user. Print chart that shows lab, reactions, and
+	compounds with hazards and CAS#s
+
+	compoundmenu()
+	
+	Takes either a compound name or CAS# (determines which one it is) and
+	prints the reactions and labs that use this compound along with its
+	CAS# and hazard class.
+
+	reactionmenu()
+	
+	Takes a reaction name and returns all compounds and labs associated.
