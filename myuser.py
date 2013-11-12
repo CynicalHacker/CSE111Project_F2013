@@ -15,7 +15,6 @@ def main(conn):
     while True:
         printmainmenu()
         selection = input()
-=======
         if selection == '4':
             print("Goodbye!")
             sys.exit(0)
@@ -24,7 +23,6 @@ def main(conn):
         elif selection == '2':
             compoundmenu()
         elif selection == '1':
->>>>>>> master
             labmenu()
         else:
             print("Unrecognized option!")
