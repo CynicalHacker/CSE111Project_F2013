@@ -31,7 +31,7 @@ def login_user():
 	#We now have a connection to a database.
 	print("Database connection successful!")	
 	while(True):
-		print("Are you user or admin? ('user' for user, 'admin' for admin)")
+		print("Please enter the username: ",end="")
 		user = input()
 		if user == "yes" or user == "y":
 			print("Try again dumbass.")
@@ -40,7 +40,7 @@ def login_user():
 			myuser.main(conn) #Pass control to myuser.py
 			sys.exit(0) #If we return from myuser, exit the program
 		elif user == "admin":
-			print("Please enter the admin password:")
+			print("Please enter the admin password:",end="")
 			pwd = input()
 			if isAdmin(pwd):
 				print("Welcome, Admin or lucky guesser!")

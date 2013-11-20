@@ -13,6 +13,7 @@ global c
 
 def main(conn):
     global c 
+    usermenus.clearscreen()
     c = conn.cursor() #Create cursor to database
     while True:
         conn.commit()
@@ -22,14 +23,20 @@ def main(conn):
             print("Goodbye!")
             sys.exit(0)
         elif selection == '5':
+            adminmenus.clearscreen()
             adminmenus.suppliermenu(c)
         elif selection == '4':
+            adminmenus.clearscreen()
             adminmenus.inventorymenu(c)
         elif selection == '3':
+            adminmenus.clearscreen()
             usermenus.reactionmenu(c)
         elif selection == '2':
+            adminmenus.clearscreen()        
             usermenus.compoundmenu(c)
         elif selection == '1':
+            adminmenus.clearscreen()        
             usermenus.labmenu(c)
         else:
+        	clearscreen()
             print("Unrecognized option!")

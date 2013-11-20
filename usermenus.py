@@ -18,11 +18,19 @@ def printmainmenu():
     print("Please enter an option: ",end="")
 
 def labmenu(c):
-    print("Which lab would you like to look up? ",end="") #Assemble all info before printing
+    print("Please enter a lab number to look up: ",end="") #Assemble all info before printing
     labnum = input() #Get lab number
-    if labnum == "":
-        print("Got invalid input!")
-        return
+    if labnum=="":
+    	clearscreen()
+    	labmenu(c)
+    	return
+    try:
+    	int(labnum)
+    except ValueError:
+    	clearscreen()
+    	print("Not a number!")
+    	labmenu(c)
+    	return
     print("Retrieving data for Lab %s..."%labnum) 
     
     c.execute("SELECT DISTINCT l_title FROM lab WHERE l_num=(?)", [labnum])
@@ -69,8 +77,12 @@ def compoundmenu(c):
     casn = ""
     haz = ""
 
-    print("Which compound would you like to look up?")
+    print("Please enter a compound name or CAS #: ",end="")
     compound = input()
+    if compound=="":
+    	clearscreen()
+    	compoundmenu(c)
+    	return
     try:
         int(compound) #If we got a CAS#, this will work
     except ValueError:
@@ -79,19 +91,25 @@ def compoundmenu(c):
     if isCAS:
         c.execute("SELECT * FROM compound WHERE c_casn = ?", (compound,))
         results = c.fetchall()
+        if [x[0] for x in results] == []: #Obtain results with list comp.
+            print("%s was not found!"%compound)
+            return
         cname = results[0][0]
         casn = results[0][1]
         haz = results[0][2]
     else:
-        c.execute("SELECT * FROM compound WHERE c_name = ?", (compound,))
+        c.execute("SELECT * FROM compound WHERE c_cname = ?", (compound,))
         results = c.fetchall()
+        if [x[0] for x in results] == []:
+            print("%s was not found!"%compound)
+            return
         cname = results[0][0]
         casn = results[0][1]
         haz = results[0][2]
 
 #We now have the cname, casn, and hazard of the compound.
 
-    c.execute("SELECT DISTINCT r_rname FROM reaction WHERE r_casn = ?",['121335'])
+    c.execute("SELECT DISTINCT r_rname FROM reaction WHERE r_casn = ?",[casn])
     results = c.fetchall()
     rname = [x[0] for x in results]
     
@@ -117,18 +135,18 @@ def compoundmenu(c):
     return
     
 def reactionmenu(c):
-    print("Which reaction would you like to look up? ",end="") #Assemble all info before printing
+    print("Please enter a reaction name: ",end="") #Assemble all info before printing
     rxnname = input() #Get lab number
-    if rxnname == "":
-        print("Got invalid input!")
-        return
-    print("Retrieving data for %s..."%rxnname)    
+    if rxnname=="":
+    	clearscreen()
+    	reactionmenu(c)
+    	return 
 
     c.execute("SELECT r_casn FROM reaction WHERE r_rname=(?)", [rxnname]) #Get CAS for compounds
     caslist = [x[0] for x in c.fetchall()] #List comprehension to get results
 
     if caslist == []: #If we do not find the reaction, exit
-        print("Reaction not found!")
+        print("%s was not found!"%rxnname)
         return
 
     lablist = []
@@ -158,4 +176,7 @@ def reactionmenu(c):
         print("\t %s %s | %s | %s" % (caslist[j], (10 - len(str(caslist[j])))*' ',hazlist[j], compoundlist[j]))
     print("\n\n") #Pad below so that we don't run right onto the menu
     return
+    
+def clearscreen():
+	os.system('cls' if os.name=='nt' else 'clear')
             

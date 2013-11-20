@@ -14,25 +14,42 @@ def printmainmenu():
     print("\t 2. Look up Compounds")
     print("\t 3. Look up Reactions")
     print("\t 4. Look up/edit inventory")
-    print("\t 5. Look up Suppliers")
+    print("\t 5. Look up/edit suppliers")
     print("\t 0. Exit")
     print("Please enter an option: ",end="")
-
-def inventorymenu(c):
+    
+def suppliermenu(c):
     while True:
-        print("Would you like to view or edit the inventory?[v/e/c]")
+        print("Would you like to view or edit the supplier list?[v/e/c]")
         inp = input()
         if inp == "v":
-            print_inventory(c)
+            print_supplist(c)
         elif inp == "e":
-            edit_inventory(c)
+            edit_supplist(c)
         elif inp == "c":
             return
         else:
             print("Unknown option!")
 
+def inventorymenu(c):
+    clearscreen()
+    while True:
+        print("Would you like to view or edit the inventory?[v/e/c] ",end="")
+        inp = input()
+        if inp == "v":
+            clearscreen()   
+            print_inventory(c)
+        elif inp == "e":
+            edit_inventory(c)
+        elif inp == "c":
+            clearscreen()
+            return
+        else:
+            clearscreen()
+            print("Unknown option!")
 
 def print_inventory(c):
+    
     c.execute("SELECT * FROM inventory")
     results = c.fetchall()
     
@@ -55,7 +72,7 @@ def print_inventory(c):
         print("%20s | %8s | %10s"%(name[j],casn[j],str(str(amt[j])+str(units[j]))))
 
 def edit_inventory(c):
-    print("Please enter a name or CAS# to edit:")
+    print("Please enter a name or CAS# to edit: ",end="")
     compound = input()
 
     isCAS = True
@@ -68,12 +85,27 @@ def edit_inventory(c):
         c.execute("SELECT * FROM inventory WHERE i_casn = ?",(compound,))
         tuple = c.fetchall()
         if [x[0] for x in tuple] == []:
-            print("Compound not found!")
-            return
+            clearscreen()
+            print("Compound not found! Add to inventory?[y/n] ",end="")
+            if input() == "n":
+                return
+            print("Please enter the name of the compound: ",end="")
+            cname = input()
+            print("Please enter the units of measure [g/L]: ",end="")
+            units = input()
+            print("Please enter the amount: ",end="")
+            amount = input()
+            try:
+                c.execute("INSERT INTO inventory VALUES (?,?,?,?)",(amount,units,cname,compound))
+                print("\n Inventory edited!")
+            except sqlite3.OperationalError:
+                print("Something is wrong with the supplied values. Aborting.")
+            finally:
+                return
         print("Current status:")
         print("Name: %s"%tuple[0][2])
         print("Amount: %s%s"%(tuple[0][0],tuple[0][1]))
-        print("What is the new amount?")
+        print("What is the new amount?", end="")
         amount = input()
         try:
             int(amount)
@@ -83,16 +115,32 @@ def edit_inventory(c):
         c.execute("UPDATE inventory SET i_amount=? WHERE i_casn=?",(amount,compound))
         
         print("\n Inventory edited!")
-    else:
+        
+    else: #IS NOT CAS
         c.execute("SELECT * FROM inventory WHERE i_cname = ?",(compound,))
         tuple = c.fetchall()
         if [x[0] for x in tuple] == []:
-            print("Compound not found!")
-            return
+            clearscreen()
+            print("Compound not found! Add to inventory?[y/n] ",end="")
+            if input() == "n":
+                return
+            print("Please enter the CAS # of the compound: ",end="")
+            casno = input()
+            print("Please enter the units of measure [g/L]: ",end="")
+            units = input()
+            print("Please enter the amount: ",end="")
+            amount = input()
+            try:
+                c.execute("INSERT INTO inventory VALUES (?,?,?,?)",(amount,units,compound,casno))
+                print("\n Inventory edited!")
+            except sqlite3.OperationalError:
+                print("Something is wrong with the supplied values. Aborting.")
+            finally:
+                return
         print("Current status:")
         print("Name: %s"%tuple[0][2])
         print("Amount: %s%s"%(tuple[0][0],tuple[0][1]))
-        print("What is the new amount?")
+        print("What is the new amount?", end="")
         amount = input()
         try:
             int(amount)
@@ -103,6 +151,8 @@ def edit_inventory(c):
         
         print("\n Inventory edited!")
 
-    print("New inventory:")
     print_inventory(c)
+    
+def clearscreen():
+	os.system('cls' if os.name=='nt' else 'clear')
     
