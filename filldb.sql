@@ -94,17 +94,3 @@ INSERT INTO catalog VALUES ('7440144', 'Spectrum Chemicals', '2000.00', 0.1, 'g'
 INSERT INTO catalog VALUES ('71238', 'Sigma-Aldrich', '200.00', 1, 'L');
 INSERT INTO catalog VALUES ('7726956', 'Spectrum Chemicals', '1234.56', '9001' , 'L');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
