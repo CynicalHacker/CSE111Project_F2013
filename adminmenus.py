@@ -23,6 +23,7 @@ def suppliermenu(c):
         print("Would you like to view or edit the supplier list?[v/e/c]")
         inp = input()
         if inp == "v":
+            clearscreen()
             print_supplist(c)
         elif inp == "e":
             edit_supplist(c)
@@ -48,6 +49,76 @@ def inventorymenu(c):
             clearscreen()
             print("Unknown option!")
 
+def print_supplist(c):
+    
+    c.execute("SELECT * FROM supplier")
+    results = c.fetchall()
+    
+    #Fetch results
+    name = []
+    phonen = []
+    country = []
+
+    name += [x[0] for x in results]
+    phonen += [x[1] for x in results]
+    country += [x[2] for x in results]
+        
+    #Print results
+    print("\n Current suppliers:")
+    print("%30s | %11s | %11s"%("Name","Country","Phone")) 
+    print("----------------------------------------------------------")
+    
+    for j in range(len(name)):
+        print("%30s | %11s | %11s"%(name[j],phonen[j],country[j]))
+        
+def edit_supplist(c):
+    print("Please enter a supplier name to edit: ",end="")
+    name = input()
+    c.execute("SELECT * FROM supplier WHERE s_sname = ?",(name,))
+    tuple = c.fetchall()
+    if [x[0] for x in tuple] == []:
+        clearscreen()
+        print("Supplier not found! Add to inventory?[y/n] ",end="")
+        if input() == "n":
+            return
+        print("Please enter the name of the supplier: ",end="")
+        sname = input()
+        print("Please enter the phone number: ",end="")
+        phonen = input()
+        print("Please enter the country: ",end="")
+        country = input()
+        try:
+            c.execute("INSERT INTO supplier VALUES (?,?,?)",(sname, phonen, country))
+            print("\n Inventory edited!")
+        except sqlite3.OperationalError:
+            print("Something is wrong with the supplied values. Aborting.")
+        finally:
+            return
+    print("Current status:")
+    print("Name: %s"%tuple[0][0])
+    print("Phone Number: %s"%(tuple[0][1]))
+    print("Country: %s"%(tuple[0][2]))
+    
+    print("\nPlease enter the new phone number (blank to leave unchanged): ", end="")
+    phonen = input()
+    print("Please enter the new country (blank to leave unchanged): ", end="")
+    country=input()
+    
+    if country == "" and phonen == "":
+        print("Database unchanged.")
+        return
+    elif country =="":
+        c.execute("UPDATE supplier SET s_phonenum=? WHERE s_sname=?",(phonen,tuple[0][0]))
+    elif phonen=="":
+        c.execute("UPDATE supplier SET s_location=? WHERE s_sname=?",(country,tuple[0][0]))
+    else:
+        c.execute("UPDATE supplier SET s_phonenum=?,s_location=?, WHERE s_sname=?",(phonen,country,tuple[0][0]))
+        
+    print("\n Supplier list edited!")
+
+    print_supplist(c)
+    return    
+    
 def print_inventory(c):
     
     c.execute("SELECT * FROM inventory")
@@ -67,6 +138,7 @@ def print_inventory(c):
     #Print results
     print("\n Current inventory:")
     print("%20s | %8s | %10s"%("Name","CAS #","Amount")) 
+    print("-----------------------------------------------")
     
     for j in range(len(amt)):
         print("%20s | %8s | %10s"%(name[j],casn[j],str(str(amt[j])+str(units[j]))))

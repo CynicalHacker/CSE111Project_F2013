@@ -27,7 +27,7 @@ def main(conn):
         elif selection == '1':
             usermenus.clearscreen()
             usermenus.labmenu(c)
-        else:
-        	clearscreen()
-            print("Unrecognized option!")
+      #  else:
+      #  	clearscreen()
+      #      print("Unrecognized option!")
 
