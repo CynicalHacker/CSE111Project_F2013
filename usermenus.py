@@ -88,7 +88,7 @@ def compoundmenu(c):
     except ValueError:
         isCAS = False #If not, we got a name
     
-    if isCAS:
+    if isCAS: #If we did in fact get a CAS
         c.execute("SELECT * FROM compound WHERE c_casn = ?", (compound,))
         results = c.fetchall()
         if [x[0] for x in results] == []: #Obtain results with list comp.
@@ -97,7 +97,7 @@ def compoundmenu(c):
         cname = results[0][0]
         casn = results[0][1]
         haz = results[0][2]
-    else:
+    else: #If we got a name
         c.execute("SELECT * FROM compound WHERE c_cname = ?", (compound,))
         results = c.fetchall()
         if [x[0] for x in results] == []:
@@ -118,7 +118,7 @@ def compoundmenu(c):
     
     for rxn in rname:
         c.execute("SELECT DISTINCT l_title,l_num FROM lab WHERE l_rname=?",[rxn])
-        results = c.fetchall()
+        results = c.fetchall() #Append results to lists
         ltitle += [x[0] for x in results]
         lnum += [x[1] for x in results]
     
@@ -153,12 +153,13 @@ def reactionmenu(c):
     compoundlist = []
     hazlist = []
     
-    for cas in caslist:
+    for cas in caslist: #Get info associated with CAS#s from reaction
         c.execute("SELECT DISTINCT c_cname,c_hazard FROM compound WHERE c_casn = ?",(cas,))
         results = c.fetchall()
         compoundlist += [x[0] for x in results]
         hazlist += [x[1] for x in results]
 
+    #Get info associated with labs from reaction
     c.execute("SELECT l_title, l_num FROM lab WHERE l_rname=?",[rxnname])
     results = c.fetchall()
     title = [x[0] for x in results]
@@ -177,6 +178,6 @@ def reactionmenu(c):
     print("\n\n") #Pad below so that we don't run right onto the menu
     return
     
-def clearscreen():
+def clearscreen(): #CLEAR!!
 	os.system('cls' if os.name=='nt' else 'clear')
             

@@ -57,31 +57,71 @@ Written in Python 2.7
 
 --myuser.py--
 	
-	A user menu for non-superusers. The various menus take 
+	A user menu for non-superusers. This is a wrapper to
+	usermenu functions to keep things nice and tidy.
+
+--usermenus.py--
 
 	-----------------
-
-	main(conn)
-	
-	Takes a connection and initializes a cursor on that connection. This cursor
-	is global to myuser.py. Afterwards, it launches a text-based user menu
-	which calls on the other menus. 
 
 	printmainmenu()
 	
 	Prints menu with options. A wrapper to make main() less messy.
 
-	labmenu()
+	labmenu(c)
 	
 	Get lab number from user. Print chart that shows lab, reactions, and
-	compounds with hazards and CAS#s
+	compounds with hazards and CAS#s.
 
-	compoundmenu()
+	compoundmenu(c)
 	
 	Takes either a compound name or CAS# (determines which one it is) and
 	prints the reactions and labs that use this compound along with its
 	CAS# and hazard class.
 
-	reactionmenu()
+	reactionmenu(c)
 	
 	Takes a reaction name and returns all compounds and labs associated.
+
+	clearscreen()
+
+	Clears the screen. What else would it do?
+
+--myadmin.py--
+
+	A wrapper for superuser menus.
+
+--adminmenus.py--
+
+	printmainmenu()
+
+	Same as usermenu.printmainmenu(), but with more options.
+
+	suppliermenu(c)
+
+	A submenu to view/edit suppliers	
+
+	inventorymenu(c)
+
+	A submenu to view/edit the inventory
+
+	print_supplist(c)
+
+	Prints a list of current suppliers
+
+	edit_supplist(c)
+	
+	Allows for editing of the supplierlist. If a non-existing supplier
+	is added, the system allows the user to create a new supplier.
+
+	print_inventory(c)
+
+	Prints the current inventory
+
+	edit_inventory(c)
+
+	Allows for editing of the inventory. Same behavior as edit_supplist(c)
+
+	clearscreen()
+
+	Clears the screen. Duh.

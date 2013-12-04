@@ -76,11 +76,12 @@ def edit_supplist(c):
     name = input()
     c.execute("SELECT * FROM supplier WHERE s_sname = ?",(name,))
     tuple = c.fetchall()
-    if [x[0] for x in tuple] == []:
+
+    if [x[0] for x in tuple] == []: #We did not find the supplier. Add a new one
         clearscreen()
         print("Supplier not found! Add to inventory?[y/n] ",end="")
         if input() == "n":
-            return
+            return #Do not add supplier, return to suppliermenu
         print("Please enter the name of the supplier: ",end="")
         sname = input()
         print("Please enter the phone number: ",end="")
@@ -94,11 +95,14 @@ def edit_supplist(c):
             print("Something is wrong with the supplied values. Aborting.")
         finally:
             return
+    
+    #If the supplier was found in the database:
+    #Print status of supplier for reference
     print("Current status:")
     print("Name: %s"%tuple[0][0])
     print("Phone Number: %s"%(tuple[0][1]))
     print("Country: %s"%(tuple[0][2]))
-    
+
     print("\nPlease enter the new phone number (blank to leave unchanged): ", end="")
     phonen = input()
     print("Please enter the new country (blank to leave unchanged): ", end="")
@@ -154,13 +158,13 @@ def edit_inventory(c):
         isCAS = False #If not, we got a name
 
     if isCAS:
-        c.execute("SELECT * FROM inventory WHERE i_casn = ?",(compound,))
+        c.execute("SELECT * FROM inventory WHERE i_casn = ?",(compound,)) #Is it in the DB?
         tuple = c.fetchall()
-        if [x[0] for x in tuple] == []:
+        if [x[0] for x in tuple] == []: #Compound not found in database
             clearscreen()
             print("Compound not found! Add to inventory?[y/n] ",end="")
             if input() == "n":
-                return
+                return #Do not want to add compound. Return to inventorymenu
             print("Please enter the name of the compound: ",end="")
             cname = input()
             print("Please enter the units of measure [g/L]: ",end="")
@@ -174,6 +178,8 @@ def edit_inventory(c):
                 print("Something is wrong with the supplied values. Aborting.")
             finally:
                 return
+
+        #Here, we found the compound. Print its status for reference
         print("Current status:")
         print("Name: %s"%tuple[0][2])
         print("Amount: %s%s"%(tuple[0][0],tuple[0][1]))
@@ -188,6 +194,7 @@ def edit_inventory(c):
         
         print("\n Inventory edited!")
         
+    #Evetything in this else clause is a mirror of the if above, using names instead of CAS#
     else: #IS NOT CAS
         c.execute("SELECT * FROM inventory WHERE i_cname = ?",(compound,))
         tuple = c.fetchall()
@@ -225,6 +232,6 @@ def edit_inventory(c):
 
     print_inventory(c)
     
-def clearscreen():
+def clearscreen(): #CLEAR!!
 	os.system('cls' if os.name=='nt' else 'clear')
     

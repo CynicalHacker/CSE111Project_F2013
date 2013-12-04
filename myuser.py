@@ -7,6 +7,7 @@ import math
 import usermenus
 
 #User menu for python project
+#Calls 
 
 def main(conn):
     global c 
@@ -27,7 +28,7 @@ def main(conn):
         elif selection == '1':
             usermenus.clearscreen()
             usermenus.labmenu(c)
-      #  else:
-      #  	clearscreen()
-      #      print("Unrecognized option!")
+        else:
+            usermenus.clearscreen()
+            print("Unrecognized option!")
 

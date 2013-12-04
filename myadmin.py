@@ -37,6 +37,8 @@ def main(conn):
         elif selection == '1':
             adminmenus.clearscreen()        
             usermenus.labmenu(c)
-  #      else:
-  #         	clearscreen()
-  #          print("Unrecognized option!")
+        elif selection == 'moo':
+            print("This program has no super cow powers. Sorry")
+        else:
+            clearscreen()
+            print("Unrecognized option!")
