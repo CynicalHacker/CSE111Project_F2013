@@ -65,7 +65,7 @@ def print_supplist(c):
         
     #Print results
     print("\n Current suppliers:")
-    print("%30s | %11s | %11s"%("Name","Country","Phone")) 
+    print("%30s | %11s | %11s"%("Name","Phone","Country")) 
     print("----------------------------------------------------------")
     
     for j in range(len(name)):

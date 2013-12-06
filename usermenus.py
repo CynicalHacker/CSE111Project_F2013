@@ -14,11 +14,16 @@ def printmainmenu():
     print("\t 1. Look up Labs")
     print("\t 2. Look up Compounds")
     print("\t 3. Look up Reactions")
-    print("\t 4. Exit")
+    print("\t 0. Exit")
     print("Please enter an option: ",end="")
 
 def labmenu(c):
+    c.execute("SELECT DISTINCT l_num FROM lab")
+    labs = c.fetchall()
+    print("Available labs: %s\t" % [x[0] for x in labs])
     print("Please enter a lab number to look up: ",end="") #Assemble all info before printing
+#print("Hello there %s, today is %s"%(name,date)) => "Hello there bob, today is monday"
+
     labnum = input() #Get lab number
     if labnum=="":
     	clearscreen()

@@ -16,7 +16,7 @@ def main(conn):
     while True:
         usermenus.printmainmenu()
         selection = input()
-        if selection == '4':
+        if selection == '0':
             print("Goodbye!")
             return
         elif selection == '3':

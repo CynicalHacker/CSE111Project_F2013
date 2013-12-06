@@ -35,11 +35,11 @@ def login_user():
 		user = input()
 		if user == "yes" or user == "y":
 			print("Try again dumbass.")
-		elif user == "user":
+		elif user == "user" or user == 'u':
 			print("Welcome, user!")
 			myuser.main(conn) #Pass control to myuser.py
 			sys.exit(0) #If we return from myuser, exit the program
-		elif user == "admin":
+		elif user == "admin"or user == 'a':
 			print("Please enter the admin password:",end="")
 			pwd = input()
 			if isAdmin(pwd):
