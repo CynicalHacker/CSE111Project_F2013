@@ -13,32 +13,31 @@ global c
 
 def main(conn):
     global c 
-    usermenus.clearscreen()
     c = conn.cursor() #Create cursor to database
     while True:
         conn.commit()
+        adminmenus.clearscreen()
         adminmenus.printmainmenu()
         selection = input()
         if selection == '0':
             print("Goodbye!")
             sys.exit(0)
         elif selection == '5':
-            adminmenus.clearscreen()
             adminmenus.suppliermenu(c)
+            continue
         elif selection == '4':
-            adminmenus.clearscreen()
             adminmenus.inventorymenu(c)
+            continue
         elif selection == '3':
-            adminmenus.clearscreen()
             usermenus.reactionmenu(c)
         elif selection == '2':
-            adminmenus.clearscreen()        
             usermenus.compoundmenu(c)
         elif selection == '1':
-            adminmenus.clearscreen()        
             usermenus.labmenu(c)
         elif selection == 'moo':
             print("This program has no super cow powers. Sorry")
         else:
-            clearscreen()
             print("Unrecognized option!")
+
+        print("Hit ENTER to return to menu: ", end = "")
+        placeholder = input()

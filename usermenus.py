@@ -18,17 +18,19 @@ def printmainmenu():
     print("Please enter an option: ",end="")
 
 def labmenu(c):
-    c.execute("SELECT DISTINCT l_num FROM lab")
-    labs = c.fetchall()
-    print("Available labs: %s\t" % [x[0] for x in labs])
+    # c.execute("SELECT DISTINCT l_num FROM lab")
+    # labs = c.fetchall()
+    # print("Available labs: %s\t" % [x[0] for x in labs])
     print("Please enter a lab number to look up: ",end="") #Assemble all info before printing
 #print("Hello there %s, today is %s"%(name,date)) => "Hello there bob, today is monday"
 
     labnum = input() #Get lab number
     if labnum=="":
-    	clearscreen()
-    	labmenu(c)
-    	return
+        clearscreen()
+        printmainmenu()
+        print("\nInvalid input!")
+        labmenu(c)
+        return
     try:
     	int(labnum)
     except ValueError:
@@ -85,9 +87,11 @@ def compoundmenu(c):
     print("Please enter a compound name or CAS #: ",end="")
     compound = input()
     if compound=="":
-    	clearscreen()
-    	compoundmenu(c)
-    	return
+        clearscreen()
+        printmainmenu()
+        print("\nInvalid input!")
+        compoundmenu(c)
+        return
     try:
         int(compound) #If we got a CAS#, this will work
     except ValueError:
@@ -143,10 +147,12 @@ def reactionmenu(c):
     print("Please enter a reaction name: ",end="") #Assemble all info before printing
     rxnname = input() #Get lab number
     if rxnname=="":
-    	clearscreen()
-    	reactionmenu(c)
-    	return 
-
+        clearscreen()
+        printmainmenu()
+        print("\nInvalid input!")
+        reactionmenu(c)
+        return 
+    
     c.execute("SELECT r_casn FROM reaction WHERE r_rname=(?)", [rxnname]) #Get CAS for compounds
     caslist = [x[0] for x in c.fetchall()] #List comprehension to get results
 

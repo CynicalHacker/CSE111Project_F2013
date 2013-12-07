@@ -31,6 +31,7 @@ def login_user():
 	#We now have a connection to a database.
 	print("Database connection successful!")	
 	while(True):
+		clearscreen()
 		print("Please enter the username: ",end="")
 		user = input()
 		if user == "yes" or user == "y":
@@ -50,6 +51,8 @@ def login_user():
 				print("Authentication failure!")
 		else:
 			print("Unrecognized user type!")
+		print("Hit ENTER to continue: ")
+		placeholder = input()
 
 def conn_to_db(dbname, create=False): #Returns sqlite3 connection to dbname, None if error
 	try:

@@ -23,31 +23,45 @@ def suppliermenu(c):
         print("Would you like to view or edit the supplier list?[v/e/c]")
         inp = input()
         if inp == "v":
-            clearscreen()
             print_supplist(c)
         elif inp == "e":
             edit_supplist(c)
         elif inp == "c":
             return
         else:
+            clearscreen()
+            printmainmenu()
             print("Unknown option!")
+            suppliermenu(c)
+            return
+        print("Hit ENTER to continue: ", end = "")
+        placeholder = input()
+        clearscreen()
+        printmainmenu()
+        print("")
 
 def inventorymenu(c):
-    clearscreen()
     while True:
         print("Would you like to view or edit the inventory?[v/e/c] ",end="")
         inp = input()
         if inp == "v":
-            clearscreen()   
             print_inventory(c)
         elif inp == "e":
             edit_inventory(c)
         elif inp == "c":
-            clearscreen()
             return
         else:
             clearscreen()
+            printmainmenu()
             print("Unknown option!")
+            suppliermenu(c)
+            return
+        print("Hit ENTER to continue: ", end = "")
+        placeholder = input()
+        clearscreen()
+        printmainmenu()
+        print("")
+        
 
 def print_supplist(c):
     
@@ -78,18 +92,15 @@ def edit_supplist(c):
     tuple = c.fetchall()
 
     if [x[0] for x in tuple] == []: #We did not find the supplier. Add a new one
-        clearscreen()
         print("Supplier not found! Add to inventory?[y/n] ",end="")
         if input() == "n":
             return #Do not add supplier, return to suppliermenu
-        print("Please enter the name of the supplier: ",end="")
-        sname = input()
         print("Please enter the phone number: ",end="")
         phonen = input()
         print("Please enter the country: ",end="")
         country = input()
         try:
-            c.execute("INSERT INTO supplier VALUES (?,?,?)",(sname, phonen, country))
+            c.execute("INSERT INTO supplier VALUES (?,?,?)",(name, phonen, country))
             print("\n Inventory edited!")
         except sqlite3.OperationalError:
             print("Something is wrong with the supplied values. Aborting.")
@@ -148,7 +159,7 @@ def print_inventory(c):
         print("%20s | %8s | %10s"%(name[j],casn[j],str(str(amt[j])+str(units[j]))))
 
 def edit_inventory(c):
-    print("Please enter a name or CAS# to edit: ",end="")
+    print("Please enter a compound to edit: ",end="")
     compound = input()
 
     isCAS = True
@@ -161,7 +172,6 @@ def edit_inventory(c):
         c.execute("SELECT * FROM inventory WHERE i_casn = ?",(compound,)) #Is it in the DB?
         tuple = c.fetchall()
         if [x[0] for x in tuple] == []: #Compound not found in database
-            clearscreen()
             print("Compound not found! Add to inventory?[y/n] ",end="")
             if input() == "n":
                 return #Do not want to add compound. Return to inventorymenu
@@ -172,10 +182,13 @@ def edit_inventory(c):
             print("Please enter the amount: ",end="")
             amount = input()
             try:
+                int(amount)
                 c.execute("INSERT INTO inventory VALUES (?,?,?,?)",(amount,units,cname,compound))
                 print("\n Inventory edited!")
             except sqlite3.OperationalError:
                 print("Something is wrong with the supplied values. Aborting.")
+            except ValueError:
+                print("Error: Need numeric values for amount.")
             finally:
                 return
 
@@ -199,7 +212,6 @@ def edit_inventory(c):
         c.execute("SELECT * FROM inventory WHERE i_cname = ?",(compound,))
         tuple = c.fetchall()
         if [x[0] for x in tuple] == []:
-            clearscreen()
             print("Compound not found! Add to inventory?[y/n] ",end="")
             if input() == "n":
                 return
@@ -210,10 +222,14 @@ def edit_inventory(c):
             print("Please enter the amount: ",end="")
             amount = input()
             try:
+                int(casno)
+                int(amount)
                 c.execute("INSERT INTO inventory VALUES (?,?,?,?)",(amount,units,compound,casno))
                 print("\n Inventory edited!")
             except sqlite3.OperationalError:
                 print("Something is wrong with the supplied values. Aborting.")
+            except ValueError:
+                print("Error: Need numeric values for CAS # and amount.")
             finally:
                 return
         print("Current status:")
