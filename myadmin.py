@@ -6,13 +6,17 @@ import sqlite3
 import math
 import usermenus
 import adminmenus
+import moo
 
 #User menu for python project
 
 global c
+global mooct #counter for mooct
 
 def main(conn):
-    global c 
+    global c
+    global mooct
+    mooct = 0
     c = conn.cursor() #Create cursor to database
     while True:
         conn.commit()
@@ -35,7 +39,21 @@ def main(conn):
         elif selection == '1':
             usermenus.labmenu(c)
         elif selection == 'moo':
-            print("This program has no super cow powers. Sorry")
+            if mooct==0:
+                print("This program has no super cow powers. Sorry")
+                mooct += 1
+            elif mooct==1:
+                print("There are no super cow powers in this program!")
+                mooct += 1
+            elif mooct==2:
+                print("I swear, there are no cow powers here")
+                mooct += 1
+            elif mooct==3:
+                print("Additional moos may cause the program to terminate unexpectedly. Please, think of the children!")
+                mooct += 1
+            else:
+                moo.moo()
+                sys.exit(0)
         else:
             print("Unrecognized option!")
 
