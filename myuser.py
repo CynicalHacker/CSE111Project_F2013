@@ -10,8 +10,11 @@ import moo
 #User menu for python project
 #Calls 
 
+
 def main(conn):
     global c 
+    global mooct
+    mooct = 0
     c = conn.cursor() #Create cursor to database
     while True:
         usermenus.clearscreen()
