@@ -1,4 +1,4 @@
 CSE111Project_F2013
 ===================
 
-DONT PLAGARIZE ME BRAH
+A simple chemical inventory database. Additional licensing and documentation can be found in the file titled "READMEH"
